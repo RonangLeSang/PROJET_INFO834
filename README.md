@@ -1,6 +1,6 @@
 # PROJET_INFO834
 
-install django python -m pip install Django
+pip install -r requirements.txt
 
 Pour lancer le serveur:
 python manage.py runserver
