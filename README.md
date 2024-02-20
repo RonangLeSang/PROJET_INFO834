@@ -1,9 +1,14 @@
 # PROJET_INFO834
 
-pip install -r requirements.txt
+pip install Django
+pip install django-compressor
+
+
+
+(pip install -r requirements.txt) ne sers pas 
 
 Pour lancer le serveur:
-python manage.py runserver
+py manage.py runserver
 
 Pour lancer le replicate il faut de lancer le MongoReplicate.
 des problèmes peuvent se poser lors de l'exécution du script. l'un des problème peut provenir de la première ligne qui précise quelle shell exécuté à modifier si besoin.
