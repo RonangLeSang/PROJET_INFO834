@@ -3,6 +3,10 @@
 pip install Django
 pip install django-compressor
 
+npm install -D tailwindcss
+npm install flowbite
+
+
 
 
 (pip install -r requirements.txt) ne sers pas 

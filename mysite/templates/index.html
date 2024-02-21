@@ -1,5 +1,15 @@
 {% extends "_base.html" %}
+{% load static %}
 
 {% block content %}
-   <!-- Your content here -->
+<div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
+<h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">Rencontres et discutes avec des inconnus.</h1>
+<div class="flex items-center w-full space-x-4">
+    <img src="{% static 'images/happyChat.jpg' %}" class="float-left">
+    <div class="flex flex-col items-center justify-center w-full">
+        <button type="button" class="px-6 py-4 text-lg font-medium text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-4">Login</button>
+        <button type="button" class="px-6 py-4 text-lg font-medium text-blue-700 bg-gray-50 hover:bg-blue-800 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg text-center dark:bg-gray-50 dark:hover:bg-blue-800 dark:hover:text-white dark:focus:ring-blue-800">Sign in</button>
+    </div>
+</div>
+</div>
 {% endblock %}
