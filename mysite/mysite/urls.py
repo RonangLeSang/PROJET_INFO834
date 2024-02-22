@@ -16,9 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from .views import index
+from .views import index, chatpage
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', index, name='index')
+    path('', index, name='index'),
+    path('chatpage', chatpage, name='chatpage')
 ]
