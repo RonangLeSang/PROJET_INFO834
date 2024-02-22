@@ -6,3 +6,9 @@ def index(request):
 
 def chatpage(request):
     return render(request, 'chatpage.html')
+
+def login(request):
+    return render(request, 'login.html')
+
+def register(request):
+    return render(request, 'register.html')
