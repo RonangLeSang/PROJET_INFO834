@@ -1,0 +1,2 @@
+file dump.rdb.1.base.rdb seq 1 type b
+file dump.rdb.1.incr.aof seq 1 type i
