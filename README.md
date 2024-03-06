@@ -2,6 +2,7 @@
 
 pip install Django
 pip install django-compressor
+pip install djongo
 
 npm install -D tailwindcss
 npm install flowbite
