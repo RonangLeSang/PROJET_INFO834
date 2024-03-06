@@ -23,5 +23,6 @@ urlpatterns = [
     path('', index, name='index'),
     path('chatpage', chatpage, name='chatpage'),
     path('login', login, name='login'),
+    path("chat/", include("chat.urls")),
     path('register', register, name='register')
 ]

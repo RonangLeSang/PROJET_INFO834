@@ -6,12 +6,17 @@ pip install django-compressor
 npm install -D tailwindcss
 npm install flowbite
 
+pip install channels
+pip install -U channels["daphne"]
+python3 -m pip install channels_redis
+
 
 
 
 (pip install -r requirements.txt) ne sers pas 
 
 Pour lancer le serveur:
+docker run -p 6379:6379 -d redis:5
 py manage.py runserver
 
 Pour lancer le replicate il faut de lancer le MongoReplicate.
