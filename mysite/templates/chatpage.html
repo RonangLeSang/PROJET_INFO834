@@ -12,7 +12,8 @@
 <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
     <div class="flex items-center w-full space-x-4" style="flex-direction:column;">
         
-        <div id="messages_space">
+        <div id="messages_wrapper" style="margin-top:52px; overflow-y:auto; max-height: calc(100vh - 126px);">
+        <div id="messages_space" style="margin-bottom:10px;">
         <!--un message-->
             <div class="flex items-start gap-2.5">
                 <img class="w-8 h-8 rounded-full" src="{% static 'images/happyChat.jpg' %}" alt="Jese image">
@@ -208,6 +209,7 @@
                 </div>
             </div>
             <!--fin d'un message-->
+        </div>
         </div>
     
 
