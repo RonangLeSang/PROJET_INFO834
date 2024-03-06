@@ -1,7 +1,9 @@
 # views.py
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from . import forms
+from .forms import RegisterForm
 
 
 def index(request):
@@ -13,7 +15,9 @@ def chatpage(request):
 
 
 def register(request):
-    return render(request, 'register.html')
+    if request.method == 'GET':
+        form = RegisterForm()
+        return render(request, 'register.html', {'form': form})
 
 
 def login(request):
