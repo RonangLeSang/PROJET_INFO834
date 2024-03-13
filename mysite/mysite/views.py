@@ -1,5 +1,7 @@
 # views.py
 from django.shortcuts import render
+from login import login_view
+from createAccount import create_ac
 
 def index(request):
     return render(request, 'index.html')
@@ -8,7 +10,7 @@ def chatpage(request):
     return render(request, 'chatpage.html')
 
 def login(request):
-    return render(request, 'login.html')
+    login_view(request)
 
 def register(request):
-    return render(request, 'register.html')
+    create_ac(request)
