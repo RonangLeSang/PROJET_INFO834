@@ -1,24 +1,16 @@
-import tornado
-from tornado.websocket import WebSocketHandler
+from pymongo import MongoClient
+from pymongo.errors import OperationFailure
 
+replica_set_name = 'myReplicaSet'
+hosts = ['localhost:27018', 'localhost:27019', 'localhost:27020', 'localhost:27021', ]
 
-class ChangesHandler(tornado.websocket.WebSocketHandler):
+client = MongoClient(hosts[0])
 
-    connected_clients = set()
-
-    def open(self):
-        ChangesHandler.connected_clients.add(self)
-
-    def on_close(self):
-        ChangesHandler.connected_clients.remove(self)
-
-    @classmethod
-    def send_updates(cls, message):
-        for connected_client in cls.connected_clients:
-            connected_client.write_message(message)
-
-    @classmethod
-    def on_change(cls, change):
-        message = f"{change['operationType']}: {change['fullDocument']['name']}"
-        ChangesHandler.send_updates(message)
-
+config = {
+'_id': replica_set_name,
+'members': [
+{'_id': 0, 'host': hosts[0]},
+{'_id': 1, 'host': hosts[1]},
+{'_id': 2, 'host': hosts[2]}
+]
+}
