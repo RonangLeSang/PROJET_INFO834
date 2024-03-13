@@ -20,7 +20,10 @@ Pour lancer le serveur:
 docker run -p 6379:6379 -d redis:5
 py manage.py runserver
 
+
 Pour lancer le replicate il faut de lancer le MongoReplicate.
+MongReplicate.bat dans le dossier Bdd_dir
+
 des problèmes peuvent se poser lors de l'exécution du script. l'un des problème peut provenir de la première ligne qui précise quelle shell exécuté à modifier si besoin.
 
 Les serveurs sont lancé sur les port 27019 27020 27021, l'arbitre sur le port 30000 

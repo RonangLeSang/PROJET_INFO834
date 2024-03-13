@@ -7,4 +7,4 @@ mongod --replSet rs0 --port 27020 --dbpath mongdata/R0S3 &
 mongod --replSet rs0 --port 27021 --dbpath mongdata/R0S4 &
 )
 
-mongod --port 30000 --dbpath mongdata/arb --replSet rs0 &
+mongod --port 30000 --dbpath $script_directory/mongdata/arb --replSet rs0
