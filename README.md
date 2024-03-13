@@ -10,6 +10,7 @@ npm install flowbite
 pip install channels
 pip install -U channels["daphne"]
 python3 -m pip install channels_redis
+pip install pymongo
 
 
 
