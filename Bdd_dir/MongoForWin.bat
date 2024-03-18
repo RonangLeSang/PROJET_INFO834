@@ -14,4 +14,4 @@ powershell -Command "Start-Process -NoNewWindow -FilePath 'mongod' -ArgumentList
 powershell -Command "Start-Process -NoNewWindow -FilePath 'mongod' -ArgumentList '--port 30000 --dbpath C:\data\arb --replSet rs0'"
 
 REM open a mongo shell
-powershell -Command "& 'mongosh' --port 27018 --eval 'rs.initiate(); rs.add("localhost:27019"); rs.add("localhost:27020"); rs.add("localhost:27021"); rs.addArb("localhost:30000"); rs.status();'"
+powershell -Command "& 'mongosh' --port 27018 --eval 'rs.initiate(); rs.add(`"localhost:27019`"); rs.add(`"localhost:27020`"); rs.add(`"localhost:27021`"); rs.addArb(`"localhost:30000`"); rs.status();'"

@@ -1,30 +1,48 @@
 # views.py
-from django.contrib.auth import authenticate
+from django.conf.global_settings import LOGIN_REDIRECT_URL
+from django.contrib import messages
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from . import forms
-from .forms import RegisterForm
+from django.shortcuts import render, redirect
+from .forms import SignupForm, LoginForm
 
 
 def index(request):
     return render(request, 'index.html')
 
-
+@login_required
 def chatpage(request):
     return render(request, 'chatpage.html')
 
 
-def register(request):
-    if request.method == 'GET':
-        form = RegisterForm()
-        return render(request, 'register.html', {'form': form})
+# def register(request):
+#     if request.method == 'GET':
+#         form = RegisterForm()
+#         return render(request, 'register.html', {'form': form})
 
 
-def login(request):
-    form = forms.LoginForm()
+def signup_page(request):
+    form = SignupForm()
+    if request.method == 'POST':
+        form = SignupForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            # auto-login user
+            login(request, user)
+            return redirect(LOGIN_REDIRECT_URL)
+    return render(request, 'register.html', context={'form': form})
+
+@login_required
+def logout_user(request):
+    logout(request)
+    return redirect('login')
+
+
+def login_page(request):
+    form = LoginForm()
     message = ''
     if request.method == 'POST':
-        form = forms.LoginForm(request.POST)
+        form = LoginForm(request.POST)
         if form.is_valid():
             user = authenticate(
                 username=form.cleaned_data['username'],
