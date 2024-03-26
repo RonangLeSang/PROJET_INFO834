@@ -88,7 +88,7 @@ CHANNEL_LAYERS = {
 DATABASES = {
     "default": {
         "ENGINE": "djongo",
-        "NAME": 'myChat',
+        "NAME": 'MyChat',
         'CLIENT': {
             'port': 27019,
         }

@@ -25,10 +25,8 @@ class SignupForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        raw_password = self.cleaned_data['password1']
-        user.set_unusable_password()
-        user.raw_password = raw_password
         if commit:
+            user.set_password(self.cleaned_data['password1'])  # Set the password using Django's built-in method
             user.save()
         return user
 
