@@ -1,6 +1,3 @@
-# views.py
-from django.conf.global_settings import LOGIN_REDIRECT_URL
-from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -48,7 +45,6 @@ def login_page(request):
             )
             if user is not None:
                 login(request, user)
-                # message = f'Bonjour, {user.username}! Vous êtes connecté.'
                 return redirect(reverse("index"))
             else:
                 message = 'Identifiants invalides.'

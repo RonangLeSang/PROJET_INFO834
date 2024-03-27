@@ -1,6 +1,7 @@
 import djongo
-from mongoModel import *
 from djongo import models
+
+from mysite.authentication.models import User
 
 
 def add_conv(UserList):
@@ -10,8 +11,8 @@ def add_conv(UserList):
     conv = ModelConversation.objects.create({'users' : UserList, 'id_conv' : string_id})
     conv.save()
     for user in UserList:
-        ModelUser.objects.filter(_id = user).update(conversation__push = string_id)
-        ModelUser.save()
+        User.objects.filter(_id = user).update(conversation__push = string_id)
+        User.save()
 
 def user_in_conv(id_user, id_conv):
     user = ModelUser.filter(_id=id_user, conversation__contains = id_conv)

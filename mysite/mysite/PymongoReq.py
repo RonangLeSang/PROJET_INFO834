@@ -51,38 +51,3 @@ def get_last_message(id_conv, nbr_message=50):
     discussion_collection = db[id_conv]
     Messages = list(discussion_collection.find().sort("date", -1).limit(nbr_message))
     return Messages
-
-
-def connect(login, password):
-    users = list(user_collection.find({'login': login, 'password': password}))
-    if users is not None:
-        return users[0]['_id']
-
-
-def create_account(login, password):
-    users = list(user_collection.find({'login': login}))
-    if users is not None:
-        return False
-    user_collection.insert_one({'login': login, 'password': password, 'conversation': []})
-    return True
-
-
-if __name__ == "__main__":
-    # create_account("baptiste", "bap")
-    # create_account("Valentin", "Val")
-    # create_account("Mohamed", "momo")
-    # create_account("Gérard", "gégé")
-    # create_account("Hugo", "Hug")
-
-    baptiste = connect("baptiste", "bap")
-    val = connect("Valentin", "Val")
-    momo = connect("Mohamed", "momo")
-    hugo = connect("Hugo", "Hug")
-
-    # input = "trcvikuaerbvkhevnkjqefrn"
-    # print(sha256(input.encode('utf-8')).hexdigest())
-    # feur = connect("aze", input)
-
-    conv = create_conv([baptiste, val, momo, hugo])
-    add_message(conv, "Salut les gens", hugo)
-    print(get_last_message(conv))
