@@ -4,21 +4,18 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.urls import reverse
+
 from .forms import SignupForm, LoginForm
 
 
 def index(request):
     return render(request, 'index.html')
 
+
 @login_required
 def chatpage(request):
     return render(request, 'chatpage.html')
-
-
-# def register(request):
-#     if request.method == 'GET':
-#         form = RegisterForm()
-#         return render(request, 'register.html', {'form': form})
 
 
 def signup_page(request):
@@ -28,9 +25,10 @@ def signup_page(request):
         if form.is_valid():
             user = form.save()
             # auto-login user
-            login(request, user)
-            return redirect(LOGIN_REDIRECT_URL)
+            # login(request, user)
+            return redirect("login")
     return render(request, 'register.html', context={'form': form})
+
 
 @login_required
 def logout_user(request):
@@ -50,7 +48,8 @@ def login_page(request):
             )
             if user is not None:
                 login(request, user)
-                message = f'Bonjour, {user.username}! Vous êtes connecté.'
+                # message = f'Bonjour, {user.username}! Vous êtes connecté.'
+                return redirect(reverse("index"))
             else:
                 message = 'Identifiants invalides.'
     return render(

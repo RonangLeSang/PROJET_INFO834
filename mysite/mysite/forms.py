@@ -29,22 +29,3 @@ class SignupForm(UserCreationForm):
             user.set_password(self.cleaned_data['password1'])  # Set the password using Django's built-in method
             user.save()
         return user
-
-
-# class RegisterForm(UserCreationForm):
-#     class Meta:
-#         model = User
-#         fields = ['username', 'password1', 'password2']
-#         labels = {
-#             'username': False,
-#             'password1': False,
-#             'password2': False
-#         }
-#
-#     def __init__(self, *args, **kwargs):
-#         super(RegisterForm, self).__init__(*args, **kwargs)
-#
-#         self.fields['username'].widget.attrs.update({'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', 'placeholder': 'Nom d\'utilisateur'})
-#         self.fields['password1'].widget.attrs.update({'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', 'placeholder': 'Mot de passe'})
-#         self.fields['password2'].widget.attrs.update({'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500', 'placeholder': 'Mot de passe'})
-
