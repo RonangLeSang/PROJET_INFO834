@@ -91,6 +91,7 @@ DATABASES = {
         "NAME": 'MyChat',
         'CLIENT': {
             'port': 27019,
+            'uuidRepresentation': 'pythonLegacy',
         }
     }
 }
