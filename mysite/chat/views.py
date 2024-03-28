@@ -1,7 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-
+# do not change this
 from chat.models import ChatRoom
+
+from .models import Message
 
 
 @login_required
@@ -15,3 +17,12 @@ def room(request, room_name):
     if created:
         chat_room.save()
     return render(request, "chat/room.html", {"room_name": room_name})
+
+
+@login_required
+def save_message(request):
+    if request.method == 'POST':
+        message_content = request.POST.get('message', '')
+        if message_content:
+            # Save the message to the database
+            Message.objects.create(content=message_content)
