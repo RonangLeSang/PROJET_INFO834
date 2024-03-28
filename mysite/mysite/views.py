@@ -20,9 +20,7 @@ def signup_page(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            # auto-login user
-            # login(request, user)
+            form.save()
             return redirect("login")
     return render(request, 'register.html', context={'form': form})
 
