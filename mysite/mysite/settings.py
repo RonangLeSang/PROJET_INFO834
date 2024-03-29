@@ -90,7 +90,7 @@ DATABASES = {
         "ENGINE": "djongo",
         "NAME": 'MyChat',
         'CLIENT': {
-            'port': 27019,
+            'port': 27021,
             'uuidRepresentation': 'pythonLegacy',
         }
     }
