@@ -19,8 +19,37 @@
             <button type="submit" id="chat-message-submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">send</button>
         </div>
     </form>
+    <label for="user-list" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Liste des utilisateurs dans la salle :</label>
+<ul id="user-list" class="list-disc pl-5 text-sm text-gray-900 dark:text-white"></ul>
+
     {{ room_name|json_script:"room-name" }}
     <script>
+            // Récupérer la liste des utilisateurs
+            function getUsersInRoom() {
+                fetch('http://127.0.0.1:8000/chat/get_users_in_room/{{ room_name }}')  // Remplacez la route avec l'URL correcte vers votre vue Django
+                .then(response => response.json())
+                .then(data => {
+                    // Mettre à jour la balise <ul> avec la liste des utilisateurs
+                    const userListElement = document.getElementById('user-list');
+                    userListElement.innerHTML = ''; // Effacer le contenu précédent
+                    data.forEach(user => {
+                        const li = document.createElement('li');
+                        li.textContent = user;
+                        userListElement.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    console.error('Une erreur s\'est produite lors de la récupération des utilisateurs :', error);
+                });
+            }
+        
+            // Appeler la fonction pour récupérer et afficher la liste des utilisateurs lors du chargement de la page
+    document.addEventListener('DOMContentLoaded', () => {
+        getUsersInRoom();
+        // Rafraîchir la liste des utilisateurs toutes les 10 secondes
+        setInterval(getUsersInRoom, 10000); // 10000 ms = 10 secondes
+    });       
+
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         const chatSocket = new WebSocket(

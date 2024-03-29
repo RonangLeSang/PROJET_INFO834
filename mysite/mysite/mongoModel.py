@@ -10,7 +10,7 @@ class EmbeddedDiscussion(models.Model):
 class ModelDiscussion(models.Model):
     _id = models.ObjectIdField()
     id_conv = models.CharField()
-    id_utilisateur = models.models.ArrayField(
+    id_utilisateur = models.ArrayField(
         model_container=models.ObjectIdField()
     )
     messages = models.ArrayField(

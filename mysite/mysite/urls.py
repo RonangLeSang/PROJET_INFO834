@@ -18,13 +18,13 @@ from django.contrib import admin
 from django.urls import include, path
 from .views import index, chatpage, login_page, logout_user, signup_page
 
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', index, name='index'),
     path('chatpage', chatpage, name='chatpage'),
     path("chat/", include("chat.urls")),
     path('register/', signup_page, name='register'),
-    path('admin/', admin.site.urls),
     path('logout/', logout_user, name='logout'),
     path('connexion', login_page, name='login'),
 ]

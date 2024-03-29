@@ -84,14 +84,17 @@ CHANNEL_LAYERS = {
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
-    "default": {
-        "ENGINE": "djongo",
-        "NAME": 'MyChat',
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME': 'your-db-name',
+        'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'port': 27019,
+            'host': '127.0.0.1:27018,127.0.0.1:27019,127.0.0.1:27020,127.0.0.1:27021',
             'uuidRepresentation': 'pythonLegacy',
+            'replicaSet': 'rs0',
+            'ssl': False,
+            'retryWrites': False,
         }
     }
 }
