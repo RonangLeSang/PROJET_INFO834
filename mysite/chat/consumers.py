@@ -1,11 +1,15 @@
 import json
-
+import redis
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
+from djongo import models
 
+# Create a Redis connection
+r = redis.Redis(host='localhost', port=6379, db=0)
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
+        self.user_id = str(self.scope["user"])
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = "chat_%s" % self.room_name
 
@@ -14,6 +18,9 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name, self.channel_name
         )
 
+        # Add user ID to Redis set
+        r.sadd(self.room_name, self.user_id)
+
         self.accept()
 
     def disconnect(self, close_code):
@@ -21,6 +28,9 @@ class ChatConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name, self.channel_name
         )
+
+        # Remove user ID from Redis set
+        r.srem(self.room_name, self.user_id)
 
     # Receive message from WebSocket
     def receive(self, text_data):
@@ -38,3 +48,16 @@ class ChatConsumer(WebsocketConsumer):
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({"message": message}))
+        
+    
+    def get_users_in_room(room_name):
+        userlist = r.smembers(room_name)
+        return [str(user_id, 'utf-8') for user_id in userlist]
+
+
+
+
+
+
+
+    
