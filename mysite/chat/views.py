@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from authentication.models import User
+
 from django.shortcuts import render
 # do not change this
 from chat.models import ChatRoom
@@ -17,7 +19,12 @@ def room(request, room_name):
     chat_room, created = ChatRoom.objects.get_or_create(name=room_name)
     if created:
         chat_room.save()
-    return render(request, "chat/room.html", {"room_name": room_name})
+    messages_req = Message.objects.filter(room_id= chat_room._id)
+    messages_db = []
+    for message in messages_req:
+        user = User.objects.get(_id=message.user_id)
+        messages_db.append( {"username" : user.username, "content": message.content} )
+    return render(request, "chat/room.html", {"room_name": room_name, "messages_db": messages_db})
 
 
 @login_required

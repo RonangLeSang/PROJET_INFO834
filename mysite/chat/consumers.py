@@ -1,8 +1,11 @@
 import json
 import redis
+from datetime import datetime
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from djongo import models
+from authentication.models import User
+from .models import Message, ChatRoom
 
 # Create a Redis connection
 r = redis.Redis(host='localhost', port=6379, db=0)
@@ -41,10 +44,17 @@ class ChatConsumer(WebsocketConsumer):
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name, {"type": "chat_message", "message": message}
         )
+    def get_id_room(self):
+        room = list(ChatRoom.objects.filter(name=self.room_name))
+        return room[0]._id
 
     # Receive message from room group
     def chat_message(self, event):
         message = event["message"]
+        id_user= User.objects.get(username = self.user_id)._id
+        trash ,content = message.split(" :",1)
+        newline = Message(user_id = id_user, room_id = self.get_id_room(), content = content, created_at = datetime.now())
+        newline.save()
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({"message": message}))
