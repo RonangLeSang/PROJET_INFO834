@@ -1,0 +1,72 @@
+version: "3.9"
+
+services:
+  monapp:
+    tty: true
+    image: chatapp
+    container_name: monapp
+    depends_on:
+      - redis1
+      - mongo1
+      - mongo2
+      - mongo3
+    ports:
+      - "8000:8000"
+
+  redis1:
+    image: redis:5
+    container_name: redis1
+    ports:
+      - "6379:6379"
+
+
+  mongo1:
+    container_name: mongo1
+    image: mongo
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27019"]
+    ports:
+      - "27019:27019"
+    extra_hosts: 
+      - "host.docker.internal:host-gateway"
+    healthcheck:
+      test: echo"try {rs.status()} catch(err){rs.initiate()}"
+      interval: 5s
+      timeout: 30s
+      retries: 30
+    volumes:
+      - "/Data/mongo1_data/data/db"
+      - "/Data/mongo1_config://data/configd"
+
+  mongo2:
+    container_name: mongo2
+    image: mongo
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27020"]
+    ports:
+      - "27020:27020"
+    extra_hosts: 
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "/Data/mongo2_data/data/db"
+      - "/Data/mongo2_config://data/configd"
+
+  mongo3:
+    container_name: mongo3
+    image: mongo
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27021"]
+    ports: 
+      - "27021:27021"
+    extra_hosts: 
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - "/Data/mongo3_data/data/db"
+      - "/Data/mongo3_config://data/configd"
+
+
+
+volumes:
+  mongo1_data:
+  mongo2_data:
+  mongo3_data:
+  mongo1_config:
+  mongo2_config:
+  mongo3_config:

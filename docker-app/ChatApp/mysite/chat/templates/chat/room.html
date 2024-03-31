@@ -1,0 +1,98 @@
+{% extends "_base.html" %}
+<!-- chat/templates/chat/index.html -->
+{% load static %}
+
+{% block content %}
+
+<label for="chat-log" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">{{ room_name }}</label>
+    <textarea id="chat-log" cols="100" rows="20" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
+      {% for message_db in messages_db %}
+        {{message_db.username}} : {{ message_db.content}}{% endfor %} 
+    </textarea>
+    
+    <form class=" text-left">   
+        <label for="chat-message-input" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Ecris ton méssage</label>
+        <div class="relative">
+            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                </svg>
+            </div>
+            <input type="text" id="chat-message-input" size="100" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Ecris ton message." required/>
+            <button type="submit" id="chat-message-submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">send</button>
+        </div>
+    </form>
+    <label for="user-list" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Liste des utilisateurs dans la salle :</label>
+<ul id="user-list" class="list-disc pl-5 text-sm text-gray-900 dark:text-white"></ul>
+
+    {{ room_name|json_script:"room-name" }}
+    <script>
+            // Récupérer la liste des utilisateurs
+            function getUsersInRoom() {
+                fetch('http://127.0.0.1:8000/chat/get_users_in_room/{{ room_name }}')  // Remplacez la route avec l'URL correcte vers votre vue Django
+                .then(response => response.json())
+                .then(data => {
+                    // Mettre à jour la balise <ul> avec la liste des utilisateurs
+                    const userListElement = document.getElementById('user-list');
+                    userListElement.innerHTML = ''; // Effacer le contenu précédent
+                    data.forEach(user => {
+                        const li = document.createElement('li');
+                        li.textContent = user;
+                        userListElement.appendChild(li);
+                    });
+                })
+                .catch(error => {
+                    console.error('Une erreur s\'est produite lors de la récupération des utilisateurs :', error);
+                });
+            }
+        
+            // Appeler la fonction pour récupérer et afficher la liste des utilisateurs lors du chargement de la page
+    document.addEventListener('DOMContentLoaded', () => {
+        getUsersInRoom();
+        // Rafraîchir la liste des utilisateurs toutes les 10 secondes
+        setInterval(getUsersInRoom, 10000); // 10000 ms = 10 secondes
+    });       
+
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').value += (data.message + '\n');
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                e.preventDefault();  // prevent form submission
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            e.preventDefault();  // prevent form submission
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            if (message === '') {
+                return;
+            } else {
+                chatSocket.send(JSON.stringify({
+                    'message': message
+                }));
+                messageInputDom.value = '';
+            }
+        };
+    </script>
+{% endblock %}
