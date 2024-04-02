@@ -27,6 +27,11 @@
                 document.querySelector('#room-name-submit').click();
             }
         };
+        document.querySelector('#room-name-input').onkeypress = function(e) {
+            if (e.key === ' ') {  // space
+                e.preventDefault();  // prevent space from being entered
+            }
+        };
 
         document.querySelector('#room-name-submit').onclick = function(e) {
             e.preventDefault();  // prevent form submission
